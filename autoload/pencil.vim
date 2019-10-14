@@ -151,6 +151,7 @@ fun! s:maybe_enable_autoformat() abort
   en
   if l:okay_to_enable
     set formatoptions+=a
+    set formatoptions+=w
   en
 endf
 
@@ -167,6 +168,7 @@ fun! pencil#setAutoFormat(af) abort
     aug pencil_autoformat
       au InsertEnter <buffer> call s:maybe_enable_autoformat()
       au InsertLeave <buffer> set formatoptions-=a
+      au InsertLeave <buffer> set formatoptions-=w
     aug END
   el
     sil! au! pencil_autoformat * <buffer>
@@ -411,10 +413,6 @@ fun! pencil#init(...) abort
     vn <buffer> <silent> k gk
     no <buffer> <silent> <Up>   gk
     no <buffer> <silent> <Down> gj
-    nn <buffer> <silent> gj j
-    nn <buffer> <silent> gk k
-    vn <buffer> <silent> gj j
-    vn <buffer> <silent> gk k
 
     " preserve behavior of up/down keys in popups
     call s:imap(1, '<Up>'  , '<C-o>g<Up>'  )
@@ -426,10 +424,6 @@ fun! pencil#init(...) abort
     sil! vu  <buffer> k
     sil! unm <buffer> <Up>
     sil! unm <buffer> <Down>
-    sil! nun <buffer> gj j
-    sil! nun <buffer> gk k
-    sil! vu <buffer> gj j
-    sil! vu <buffer> gk k
 
     sil! iu <buffer> <Up>
     sil! iu <buffer> <Down>
