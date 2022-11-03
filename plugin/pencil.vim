@@ -1,17 +1,19 @@
 " ============================================================================
 " File:        pencil.vim
 " Description: vim-pencil plugin
-" Maintainer:  Reed Esau <github.com/reedes>
+" Maintainer:  preservim <https://github.com/preservim>
 " Created:     December 28, 2013
 " License:     The MIT License (MIT)
 " ============================================================================
-"
-if exists('g:loaded_pencil') || &cp | fini | en
+
+scriptencoding utf-8
+
+if exists('g:loaded_pencil') || &compatible | fini | en
 let g:loaded_pencil = 1
 
 " Save 'cpoptions' and set Vim default to enable line continuations.
-let s:save_cpo = &cpo
-set cpo&vim
+let s:save_cpoptions = &cpoptions
+set cpoptions&vim
 
 let s:WRAP_MODE_DEFAULT = -1
 let s:WRAP_MODE_OFF     = 0
@@ -31,7 +33,7 @@ fun! PencilMode()
     if b:pencil_wrap_mode ==# s:WRAP_MODE_SOFT
       return get(g:pencil#mode_indicators, 'soft', 'S')
     elsei b:pencil_wrap_mode ==# s:WRAP_MODE_HARD
-      if &fo =~ 'a'
+      if &formatoptions =~# 'a'
         return get(g:pencil#mode_indicators, 'auto', 'A')
       el
         return get(g:pencil#mode_indicators, 'hard', 'H')
@@ -96,7 +98,8 @@ if !exists('g:pencil#autoformat_config')
         \   },
         \   'rst': {
         \     'black': [
-        \       'rst(CodeBlock|Directive|LiteralBlock|Sections)',
+        \       'rst(CodeBlock|Directive|ExDirective|LiteralBlock|Sections)',
+        \       'rst(Comment|Delimiter|ExplicitMarkup|SimpleTable)',
         \     ],
         \   },
         \   'tex': {
@@ -178,18 +181,18 @@ en
 
 " Commands
 
-com -nargs=0 Pencil         call pencil#init({'wrap': 'on' })
-com -nargs=0 PencilOff      call pencil#init({'wrap': 'off' })
-com -nargs=0 NoPencil       call pencil#init({'wrap': 'off' })
-com -nargs=0 HardPencil     call pencil#init({'wrap': 'hard'})
-com -nargs=0 PencilHard     call pencil#init({'wrap': 'hard'})
-com -nargs=0 SoftPencil     call pencil#init({'wrap': 'soft'})
-com -nargs=0 PencilSoft     call pencil#init({'wrap': 'soft'})
-com -nargs=0 PencilToggle   call pencil#init({'wrap': 'toggle'})
-com -nargs=0 TogglePencil   call pencil#init({'wrap': 'toggle'})
-com -nargs=0 PFormat        call pencil#setAutoFormat(1)
-com -nargs=0 PFormatOff     call pencil#setAutoFormat(0)
-com -nargs=0 PFormatToggle  call pencil#setAutoFormat(-1)
+command-bar -nargs=0 Pencil         call pencil#init({'wrap': 'on' })
+command-bar -nargs=0 PencilOff      call pencil#init({'wrap': 'off' })
+command-bar -nargs=0 NoPencil       call pencil#init({'wrap': 'off' })
+command-bar -nargs=0 HardPencil     call pencil#init({'wrap': 'hard'})
+command-bar -nargs=0 PencilHard     call pencil#init({'wrap': 'hard'})
+command-bar -nargs=0 SoftPencil     call pencil#init({'wrap': 'soft'})
+command-bar -nargs=0 PencilSoft     call pencil#init({'wrap': 'soft'})
+command-bar -nargs=0 PencilToggle   call pencil#init({'wrap': 'toggle'})
+command-bar -nargs=0 TogglePencil   call pencil#init({'wrap': 'toggle'})
+command-bar -nargs=0 PFormat        call pencil#setAutoFormat(1)
+command-bar -nargs=0 PFormatOff     call pencil#setAutoFormat(0)
+command-bar -nargs=0 PFormatToggle  call pencil#setAutoFormat(-1)
 
 " NOTE: legacy commands have been disabled by default as of 31-Dec-15
 "       These will be removed entirely on 31-Dec-16
@@ -203,7 +206,7 @@ if g:pencil#legacyCommands
   com -nargs=0 ShiftPencil   call pencil#setAutoFormat(-1)
 en
 
-let &cpo = s:save_cpo
-unlet s:save_cpo
+let &cpoptions = s:save_cpoptions
+unlet s:save_cpoptions
 
 " vim:ts=2:sw=2:sts=2
