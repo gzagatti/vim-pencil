@@ -418,22 +418,11 @@ fun! pencil#init(...) abort
     exe 'nn <buffer> <silent> ' . Mapkey('k', 'n') . ' gk'
     exe 'vn <buffer> <silent> ' . Mapkey('j', 'v') . ' gj'
     exe 'vn <buffer> <silent> ' . Mapkey('k', 'v') . ' gk'
-    no <buffer> <silent> <Up>   gk
-    no <buffer> <silent> <Down> gj
-
-    " preserve behavior of up/down keys in popups
-    call s:imap(1, '<Up>'  , '<C-o>g<Up>'  )
-    call s:imap(1, '<Down>', '<C-o>g<Down>')
   el
     sil! nun <buffer> j
     sil! nun <buffer> k
     sil! vu  <buffer> j
     sil! vu  <buffer> k
-    sil! unm <buffer> <Up>
-    sil! unm <buffer> <Down>
-
-    sil! iu <buffer> <Up>
-    sil! iu <buffer> <Down>
   en
 
   " set undo points around common punctuation,
